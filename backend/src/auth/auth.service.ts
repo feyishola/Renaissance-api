@@ -21,7 +21,7 @@ export class AuthService {
       where: { email },
     });
 
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       return user;
     }
 
@@ -30,15 +30,15 @@ export class AuthService {
 
   async login(loginDto: LoginDto): Promise<AuthResponseDto> {
     const user = await this.validateUser(loginDto.email, loginDto.password);
-    
+
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const payload = { 
-      sub: user.id, 
-      email: user.email, 
-      role: user.role 
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      role: user.role,
     };
 
     const accessToken = this.jwtService.sign(payload);
@@ -69,15 +69,16 @@ export class AuthService {
 
     const savedUser = await this.userRepository.save(user);
 
-    const payload = { 
-      sub: savedUser.id, 
-      email: savedUser.email, 
-      role: savedUser.role 
+    const payload = {
+      sub: savedUser.id,
+      email: savedUser.email,
+      role: savedUser.role,
     };
 
     const accessToken = this.jwtService.sign(payload);
 
-    const { password, posts, comments, ...userWithoutSensitiveData } = savedUser;
+    const { password, posts, comments, ...userWithoutSensitiveData } =
+      savedUser;
 
     return {
       user: userWithoutSensitiveData,

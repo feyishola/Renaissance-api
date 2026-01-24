@@ -2,6 +2,9 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../common/entities/base.entity';
 import { Post } from '../../posts/entities/post.entity';
 import { Comment } from '../../comments/entities/comment.entity';
+import { Bet } from '../../bets/entities/bet.entity';
+import { Transaction } from '../../transactions/entities/transaction.entity';
+import { Prediction } from '../../predictions/entities/prediction.entity';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -24,10 +27,10 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'first_name', nullable: true })
   firstName: string;
 
-  @Column({ nullable: true })
+  @Column({ name: 'last_name', nullable: true })
   lastName: string;
 
   @Column({ nullable: true })
@@ -59,15 +62,33 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   location: string;
 
-  @Column({ default: false })
+  @Column({ name: 'email_verified', default: false })
   emailVerified: boolean;
 
-  @Column({ nullable: true })
+  @Column({ name: 'last_login_at', nullable: true })
   lastLoginAt: Date;
+
+  @Column({
+    name: 'wallet_balance',
+    type: 'decimal',
+    precision: 18,
+    scale: 8,
+    default: 0,
+  })
+  walletBalance: number;
 
   @OneToMany(() => Post, (post) => post.author)
   posts: Post[];
 
-  @OneToMany(() => Comment, (comment) => comment.author)
+  @OneToMany(() => Comment, (comment) => comment.author, { cascade: true })
   comments: Comment[];
+
+  @OneToMany(() => Bet, (bet) => bet.user, { cascade: true })
+  bets: Bet[];
+
+  @OneToMany(() => Transaction, (transaction) => transaction.user)
+  transactions: Transaction[];
+
+  @OneToMany(() => Prediction, (prediction) => prediction.user, { cascade: true })
+  predictions: Prediction[];
 }
