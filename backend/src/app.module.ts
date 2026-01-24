@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
 import { getTypeOrmConfig } from './database/typeorm.config';
 import { User } from './users/entities/user.entity';
 import { Post } from './posts/entities/post.entity';
@@ -22,6 +23,7 @@ import { PostsModule } from './posts/posts.module';
 import { PredictionsModule } from './predictions/predictions.module';
 import { validate } from './common/config/env.validation';
 import { LeaderboardModule } from './leaderboard/leaderboard.module';
+import { ReconciliationModule } from './reconciliation/reconciliation.module';
 
 
 @Module({
@@ -33,6 +35,7 @@ import { LeaderboardModule } from './leaderboard/leaderboard.module';
       validate,
       cache: true,
     }),
+    ScheduleModule.forRoot(),
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -68,6 +71,7 @@ import { LeaderboardModule } from './leaderboard/leaderboard.module';
     PostsModule,
     PredictionsModule,
     LeaderboardModule,
+    ReconciliationModule,
   ],
   controllers: [],
   providers: [
