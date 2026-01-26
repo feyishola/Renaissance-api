@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
 import { getTypeOrmConfig } from './database/typeorm.config';
 import { User } from './users/entities/user.entity';
 import { Post } from './posts/entities/post.entity';
@@ -31,6 +32,8 @@ import { SpinModule } from './spin/spin.module';
 import { HealthModule } from './health/health.module';
 import { CacheConfigModule } from './common/cache/cache.module';
 
+import { LeaderboardModule } from './leaderboard/leaderboard.module';
+import { ReconciliationModule } from './reconciliation/reconciliation.module';
 
 
 @Module({
@@ -42,6 +45,7 @@ import { CacheConfigModule } from './common/cache/cache.module';
       validate,
       cache: true,
     }),
+    ScheduleModule.forRoot(),
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -81,9 +85,11 @@ import { CacheConfigModule } from './common/cache/cache.module';
     PredictionsModule,
     FreeBetVouchersModule,
     SpinModule,
+    LeaderboardModule,
     LeaderboardsModule,
     HealthModule,
     CacheConfigModule,
+    ReconciliationModule,
   ],
   controllers: [],
   providers: [
