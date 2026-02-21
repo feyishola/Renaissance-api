@@ -42,6 +42,7 @@ import { CorrelationIdMiddleware } from './common/middleware/correlation-id.midd
 import { SpinGameModule } from './spin-game/spin-game.module';
 import { Leaderboard } from './leaderboard/entities/leaderboard.entity';
 import { CircuitBreakerGuard } from './auth/guards/circuit-breaker.guard';
+import { RateLimitModule } from './rate-limit/rate-limit.module';
 
 
 @Module({
@@ -89,6 +90,7 @@ import { CircuitBreakerGuard } from './auth/guards/circuit-breaker.guard';
       UserLeaderboardStats,
     ]),
     SpinGameModule,
+    RateLimitModule,
     StakingModule,
     LeaderboardModule,
     FreeBetVouchersModule,

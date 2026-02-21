@@ -20,6 +20,8 @@ import { SpinService } from './spin.service';
 import { CreateSpinDto } from './dto/create-spin.dto';
 import { SpinResultDto } from './dto/spin-result.dto';
 import { CriticalAction } from '../common/decorators/critical-action.decorator';
+import { RateLimitInteractionGuard } from '../rate-limit/guards/rate-limit-interaction.guard';
+import { RateLimitAction } from '../rate-limit/decorators/rate-limit-action.decorator';
 
 /**
  * Controller for secure spin operations with provably fair randomness
@@ -40,6 +42,8 @@ export class SpinController {
 
   @Post()
   @CriticalAction('spin.execute')
+  @UseGuards(RateLimitInteractionGuard)
+  @RateLimitAction('spin')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Execute a spin',

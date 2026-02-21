@@ -17,6 +17,8 @@ import {
 } from './dto/spin-game.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CriticalAction } from '../common/decorators/critical-action.decorator';
+import { RateLimitInteractionGuard } from '../rate-limit/guards/rate-limit-interaction.guard';
+import { RateLimitAction } from '../rate-limit/decorators/rate-limit-action.decorator';
 
 @ApiTags('Spin Game')
 @Controller('spin-game')
@@ -38,6 +40,8 @@ export class SpinGameController {
 
   @Post('spin')
   @CriticalAction('spin_game.spin')
+  @UseGuards(RateLimitInteractionGuard)
+  @RateLimitAction('spin_game')
   @ApiOperation({ summary: 'Execute a spin' })
   @ApiResponse({ 
     status: HttpStatus.CREATED, 
