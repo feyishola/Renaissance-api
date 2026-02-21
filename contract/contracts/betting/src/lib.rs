@@ -7,7 +7,7 @@ use common::{
 };
 
 #[contracttype]
-#[derive(Clone)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct SpinExecution {
     pub spin_id: BytesN<32>,
     pub executor: Address,
