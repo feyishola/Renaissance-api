@@ -1,69 +1,23 @@
-
-use soroban_sdk::{contracttype, Address, Symbol,, BytesN String, U256, Map, Env};
+use soroban_sdk::{contracttype, Address, BytesN, Env, Map, String, Symbol, U256};
 
 // ===== CORE EVENTS =====
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct StakeEvent {
-    pub user: Address,
-    pub amount: i128,
-    pub token_address: Address,
-    pub staking_contract: Address,
+pub struct SpinExecutedEvent {
+    pub spin_id: BytesN<32>,
+    pub executor: Address,
     pub timestamp: u64,
-    pub stake_id: U256,
 }
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct UnstakeEvent {
-    pub user: Address,
-    pub amount: i128,
-    pub token_address: Address,
-    pub staking_contract: Address,
-    pub timestamp: u64,
-    pub stake_id: U256,
-    pub rewards: i128,
-}
-
-#[contracttype]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct BetEvent {
-    pub bettor: Address,
-    pub amount: i128,
-    pub bet_id: U256,
-    pub betting_contract: Address,
-    pub timestamp: u64,
-    pub bet_type: Symbol,
-    pub odds: u32,
-    pub metadata: Map<Symbol, String>,
-}
-
-#[contracttype]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct SettlementEvent {
+pub struct SettlementExecutedEvent {
+    pub operation_hash: BytesN<32>,
     pub bet_id: U256,
     pub winner: Address,
     pub payout: i128,
-    pub betting_contract: Address,
     pub timestamp: u64,
-    pub settlement_type: Symbol,
-    pub final_odds: u32,
-    pub metadata: Map<Symbol, String>,
-}
-
-#[contracttype]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct SpinRewardEvent {
-    pub user: Address,
-    pub reward_amount: i128,
-    pub token_address: Address,
-    pub game_contract: Address,
-    pub timestamp: u64,
-    pub spin_id: U256,
-    pub reward_type: Symbol,
-    pub multiplier: u32,
-    pub metadata: Map<Symbol, String>,
 }
 
 #[contracttype]
@@ -79,39 +33,15 @@ pub struct NFTMintEvent {
     pub price: Option<i128>,
 }
 
-// ===== LEGACY EVENTS (for backward compatibility) =====
-
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct BetPlacedEvent {
-    pub bettor: Address,
-    pub bet_id: Symbol,
-    pub amount: i128,
-}
-
-#[contracttype]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct BetSettledEvent {
-    pub bet_id: Symbol,
-    pub winner: Address,
-    pub payout: i128,
-}
-
-#[contracttype]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct BetCancelledEvent {
-    pub bet_id: Symbol,
-    pub reason: Symbol,
-}
-
-#[contracttype]
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct SpinExecutedEvent {
-    pub spin_id: BytesN<32>,
-    pub executor: Address,
+pub struct ReplayRejectedEvent {
+    pub operation_hash: BytesN<32>,
+    pub scope: Symbol,
     pub timestamp: u64,
-// ===== EVENT CONSTANTS =====
+}
 
+// ===== EVENT CONSTANTS =====
 pub const STAKE_EVENT: Symbol = Symbol::short("STAKE");
 pub const UNSTAKE_EVENT: Symbol = Symbol::short("UNSTAKE");
 pub const BET_EVENT: Symbol = Symbol::short("BET");
@@ -199,28 +129,18 @@ pub fn create_settlement_event(
     }
 }
 
-pub fn create_spin_reward_event(
-    env: &Env,
-    user: Address,
-    reward_amount: i128,
-    token_address: Address,
-    game_contract: Address,
-    spin_id: U256,
-    reward_type: Symbol,
-    multiplier: u32,
-) -> SpinRewardEvent {
-    SpinRewardEvent {
-        user,
-        reward_amount,
-        token_address,
-        game_contract,
-        timestamp: 0, // Will be set by contract
-        spin_id,
-        reward_type,
-        multiplier,
-        metadata: Map::new(env),
-    }
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct BetPlacedEvent {
+    pub bettor: Address,
+    pub bet_id: Symbol,
+    pub amount: i128,
 }
+
+// ===== EVENT CONSTANTS =====
+
+
+pub const NFT_MINT_EVENT: Symbol = Symbol::short("NFT_MINT");
 
 pub fn create_nft_mint_event(
     env: &Env,
@@ -236,7 +156,7 @@ pub fn create_nft_mint_event(
         to,
         token_uri,
         nft_contract,
-        timestamp: 0, // Will be set by contract
+        timestamp: 0,
         mint_type,
         metadata: Map::new(env),
         price,
