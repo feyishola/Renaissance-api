@@ -7,6 +7,7 @@ members = [
   "contracts/player_card",
   "contracts/settlement",
   "contracts/staking",
+  "contracts/treasury",
 ]
 
 [workspace.dependencies]
