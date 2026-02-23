@@ -4,7 +4,6 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { Request, Response, NextFunction } from 'express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-
 import { AppLogger } from './common/logger/app.logger';
 
 import { AppLogger } from './common/logger/logger.service';

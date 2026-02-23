@@ -126,6 +126,11 @@ export class AdminController {
   // New Analytics Endpoints (#147)
   // ------------------------------
 
+  // ------------------------------
+  // New Analytics Endpoints (#147)
+  // ------------------------------
+
+
   @Get('analytics/users/total')
   async totalUsers() {
     return { total: await this.analyticsService.getTotalUsers() };
