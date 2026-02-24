@@ -9,6 +9,16 @@ import { CreateAchievementDto } from './dto/create-achievement.dto';
 
 @Injectable()
 export class GamificationService {
+        async seedBadges() {
+            // Import badge seed data
+            const { badgeSeedData } = await import('./badge-seed-data');
+            for (const badge of badgeSeedData) {
+                const exists = await this.achievementRepository.findOne({ where: { name: badge.name } });
+                if (!exists) {
+                    await this.createAchievement(badge);
+                }
+            }
+        }
     private readonly logger = new Logger(GamificationService.name);
 
     constructor(

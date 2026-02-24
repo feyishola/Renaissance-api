@@ -31,4 +31,13 @@ export class UserAchievement extends BaseEntity {
 
     @Column({ nullable: true })
     completedAt: Date;
+
+    // Badge immutability: once completed, cannot be revoked or changed
+    setCompleted() {
+        if (this.isCompleted) {
+            throw new Error('Badge already granted and immutable.');
+        }
+        this.isCompleted = true;
+        this.completedAt = new Date();
+    }
 }
