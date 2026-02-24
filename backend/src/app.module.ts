@@ -47,8 +47,11 @@ import { AuditModule } from './audit/audit.module';
 import { CircuitBreakerGuard } from './auth/guards/circuit-breaker.guard';
 import { RateLimitModule } from './rate-limit/rate-limit.module';
 import { EventListenerModule } from './common/events/event-listener.module';
-import { NftModule } from './nft/nft.module';
+import { NFTModule } from './nft/nft.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { GamificationModule } from './gamification/gamification.module';
+import { Achievement } from './gamification/entities/achievement.entity';
+import { UserAchievement } from './gamification/entities/user-achievement.entity';
 
 // Custom role-based guard
 import { RateLimitGuard } from './common/guards/rate-limit.guard';
@@ -96,6 +99,8 @@ import { RateLimitGuard } from './common/guards/rate-limit.guard';
       Spin,
       SpinSession,
       UserLeaderboardStats,
+      Achievement,
+      UserAchievement,
     ]),
     SpinGameModule,
     RateLimitModule,
@@ -111,11 +116,12 @@ import { RateLimitGuard } from './common/guards/rate-limit.guard';
     ReconciliationModule,
     LoggerModule,
     EventListenerModule,
-    NftModule,
+    NFTModule,
     ProgressModule,
     SolvencyModule,
     AuditModule,
     NotificationsModule,
+    GamificationModule,
   ],
   providers: [
     {

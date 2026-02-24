@@ -5,6 +5,8 @@ import { NotificationsGateway } from './notifications.gateway';
 import { NotificationIntegrationService } from './notification-integration.service';
 import { NotificationsController } from './notifications.controller';
 import { User } from '../users/entities/user.entity';
+import { CqrsModule } from '@nestjs/cqrs';
+import { AchievementUnlockedNotificationHandler } from './handlers/achievement-unlocked.handler';
 
 /**
  * Notifications Module
@@ -14,6 +16,7 @@ import { User } from '../users/entities/user.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
+    CqrsModule,
   ],
   controllers: [
     NotificationsController,
@@ -22,6 +25,7 @@ import { User } from '../users/entities/user.entity';
     NotificationsService,
     NotificationsGateway,
     NotificationIntegrationService,
+    AchievementUnlockedNotificationHandler,
   ],
   exports: [
     NotificationsService,
@@ -29,4 +33,4 @@ import { User } from '../users/entities/user.entity';
     NotificationIntegrationService,
   ],
 })
-export class NotificationsModule {}
+export class NotificationsModule { }
