@@ -7,6 +7,7 @@ export enum TriggerEvent {
   SPIN_RESULT = 'SPIN_RESULT',
   STAKING_EVENT = 'STAKING_EVENT',
   LEADERBOARD_UPDATE = 'LEADERBOARD_UPDATE',
+  NFT_EARNED = 'NFT_EARNED',
   // Can be extended with more events in the future
 }
 
@@ -38,6 +39,13 @@ export class Achievement extends BaseEntity {
     default: RuleType.COUNT,
   })
   ruleType: RuleType;
+
+  // Badge types
+  static readonly BADGE_10_CONSECUTIVE_WINS = '10_CONSECUTIVE_WINS';
+  static readonly BADGE_100_XLM_STAKED = '100_XLM_STAKED';
+  static readonly BADGE_FIRST_NFT_EARNED = 'FIRST_NFT_EARNED';
+  static readonly BADGE_50_SPINS_COMPLETED = '50_SPINS_COMPLETED';
+  static readonly BADGE_TOP_10_LEADERBOARD = 'TOP_10_LEADERBOARD';
 
   // The condition to meet
   @Column({ type: 'decimal', precision: 18, scale: 8, default: 0 })
